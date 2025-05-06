@@ -10,54 +10,39 @@ ScreenGui.Name = "LockedScreenGUI"
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ResetOnSpawn = false
 ScreenGui.Parent = game:GetService("CoreGui") -- Uses CoreGui
-ScreenGui.Enabled = true -- **Ensures GUI is visible**
+ScreenGui.Enabled = true -- Ensures GUI is visible
 
 Frame.Size = UDim2.new(1, 0, 1, 0) -- Fullscreen
 Frame.Position = UDim2.new(0, 0, 0, 0)
 Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Solid black
 
-TitleLabel.Parent = Frame
-TitleLabel.Size = UDim2.new(1, 0, 0.1, 0) -- Top 5% of screen
-TitleLabel.Position = UDim2.new(0, 0, 0.05, 0)
-TitleLabel.BackgroundTransparency = 1
-TitleLabel.Text = "RINGTA BOND FARM 5%"
-TitleLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-TitleLabel.TextScaled = true
+-- Debug print statement
+print("GUI loaded successfully")
 
-DiscordLabel.Parent = Frame
-DiscordLabel.Size = UDim2.new(1, 0, 0.1, 0) -- Middle 50% of screen
-DiscordLabel.Position = UDim2.new(0, 0, 0.5, 0)
-DiscordLabel.BackgroundTransparency = 1
-DiscordLabel.Text = "discord.gg/ringta"
-DiscordLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-DiscordLabel.TextScaled = true
+-- Text Labels Setup Function
+local function createLabel(parent, positionY, text)
+    local label = Instance.new("TextLabel")
+    label.Parent = parent
+    label.Size = UDim2.new(1, 0, 0.1, 0)
+    label.Position = UDim2.new(0, 0, positionY, 0)
+    label.BackgroundTransparency = 1
+    label.Text = text
+    label.TextColor3 = Color3.fromRGB(255, 255, 255)
+    label.TextScaled = true
+    return label
+end
 
-BondsLabel.Parent = Frame
-BondsLabel.Size = UDim2.new(1, 0, 0.1, 0) -- Bottom 90% of screen
-BondsLabel.Position = UDim2.new(0, 0, 0.9, 0)
-BondsLabel.BackgroundTransparency = 1
-BondsLabel.Text = "0 bonds collected"
-BondsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-BondsLabel.TextScaled = true
+TitleLabel = createLabel(Frame, 0.05, "RINGTA BOND FARM 5%")
+DiscordLabel = createLabel(Frame, 0.5, "discord.gg/ringta")
+CreditsLabel = createLabel(Frame, 0.4, "Made by Ringta and Akundisco")
+StatusLabel = createLabel(Frame, 0.7, "Getting ready to collect bonds")
+BondsLabel = createLabel(Frame, 0.9, "0 bonds collected")
 
-CreditsLabel.Parent = Frame
-CreditsLabel.Size = UDim2.new(1, 0, 0.1, 0) -- 40% screen height
-CreditsLabel.Position = UDim2.new(0, 0, 0.4, 0)
-CreditsLabel.BackgroundTransparency = 1
-CreditsLabel.Text = "Made by Ringta and Akundisco"
-CreditsLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-CreditsLabel.TextScaled = true
-
-StatusLabel.Parent = Frame
-StatusLabel.Size = UDim2.new(1, 0, 0.1, 0) -- 70% screen height
-StatusLabel.Position = UDim2.new(0, 0, 0.7, 0)
-StatusLabel.BackgroundTransparency = 1
-StatusLabel.Text = "Getting ready to collect bonds"
-StatusLabel.TextColor3 = Color3.fromRGB(255, 255, 255)
-StatusLabel.TextScaled = true
-
--- Dynamic Status Updates
+-- Dynamic Status Updates with Debugging
 task.spawn(function()
+    task.wait(3) -- Wait 3 seconds before updating
+    print("Starting status updates...") -- Debug print
+
     task.wait(1) -- At 1 second, update text
     StatusLabel.Text = "Getting ready to collect bonds"
 
@@ -68,17 +53,20 @@ task.spawn(function()
     StatusLabel.Text = "Restarting script soon"
 end)
 
--- Bonds Collection Logic
+-- Bonds Collection Logic with Debugging
 local bonds = 1
 local targetBonds = math.random(70, 90) -- Random target between 70-90 bonds
 local totalTime = 85 -- Total time to reach the target (seconds)
-local interval = totalTime / (targetBonds - bonds) -- Calculate interval for gradual climb
+local interval = (totalTime / (targetBonds - bonds)) * 1.2 -- Slightly slower updates
 
 task.spawn(function()
-    task.wait(12) -- Start at 12 seconds
+    task.wait(12) -- Wait 12 seconds before starting bond count
+    print("Starting bond collection...") -- Debug print
+
     while bonds < targetBonds do
         task.wait(interval)
         bonds = math.min(bonds + math.random(2, 5), targetBonds)
         BondsLabel.Text = tostring(bonds) .. " bonds collected"
+        print("Updated Bonds:", bonds) -- Debug print
     end
 end)
