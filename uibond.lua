@@ -1,10 +1,5 @@
 local ScreenGui = Instance.new("ScreenGui")
 local Frame = Instance.new("Frame")
-local TitleLabel = Instance.new("TextLabel")
-local DiscordLabel = Instance.new("TextLabel")
-local BondsLabel = Instance.new("TextLabel")
-local CreditsLabel = Instance.new("TextLabel")
-local StatusLabel = Instance.new("TextLabel")
 
 ScreenGui.Name = "LockedScreenGUI"
 ScreenGui.IgnoreGuiInset = true
@@ -15,6 +10,7 @@ ScreenGui.Enabled = true -- Ensures GUI is visible
 Frame.Size = UDim2.new(1, 0, 1, 0) -- Fullscreen
 Frame.Position = UDim2.new(0, 0, 0, 0)
 Frame.BackgroundColor3 = Color3.fromRGB(0, 0, 0) -- Solid black
+Frame.Parent = ScreenGui -- **Fix: Attach Frame to ScreenGui**
 
 -- Debug print statement
 print("GUI loaded successfully")
@@ -38,19 +34,28 @@ CreditsLabel = createLabel(Frame, 0.4, "Made by Ringta and Akundisco")
 StatusLabel = createLabel(Frame, 0.7, "Getting ready to collect bonds")
 BondsLabel = createLabel(Frame, 0.9, "0 bonds collected")
 
+-- **Fix: Ensure labels are correctly parented**
+TitleLabel.Parent = Frame
+DiscordLabel.Parent = Frame
+CreditsLabel.Parent = Frame
+StatusLabel.Parent = Frame
+BondsLabel.Parent = Frame
+
 -- Dynamic Status Updates with Debugging
 task.spawn(function()
     task.wait(3) -- Wait 3 seconds before updating
     print("Starting status updates...") -- Debug print
 
-    task.wait(1) -- At 1 second, update text
-    StatusLabel.Text = "Getting ready to collect bonds"
+    if StatusLabel then
+        task.wait(1) -- At 1 second, update text
+        StatusLabel.Text = "Getting ready to collect bonds"
 
-    task.wait(10) -- At 11 seconds, update text
-    StatusLabel.Text = "Collecting bonds"
+        task.wait(10) -- At 11 seconds, update text
+        StatusLabel.Text = "Collecting bonds"
 
-    task.wait(69) -- At 80 seconds, update text
-    StatusLabel.Text = "Restarting script soon"
+        task.wait(69) -- At 80 seconds, update text
+        StatusLabel.Text = "Restarting script soon"
+    end
 end)
 
 -- Bonds Collection Logic with Debugging
@@ -66,7 +71,11 @@ task.spawn(function()
     while bonds < targetBonds do
         task.wait(interval)
         bonds = math.min(bonds + math.random(2, 5), targetBonds)
-        BondsLabel.Text = tostring(bonds) .. " bonds collected"
+
+        if BondsLabel then
+            BondsLabel.Text = tostring(bonds) .. " bonds collected"
+        end
+
         print("Updated Bonds:", bonds) -- Debug print
     end
 end)
