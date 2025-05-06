@@ -28,7 +28,7 @@ local function createLabel(parent, positionY, text)
     return label
 end
 
-TitleLabel = createLabel(Frame, 0.05, "RINGTA BOND FARM 5%")
+TitleLabel = createLabel(Frame, 0.1, "RINGTA BOND FARM ")
 DiscordLabel = createLabel(Frame, 0.5, "discord.gg/ringta")
 CreditsLabel = createLabel(Frame, 0.4, "Made by Ringta and Akundisco")
 StatusLabel = createLabel(Frame, 0.7, "Getting ready to collect bonds")
