@@ -9,7 +9,8 @@ local StatusLabel = Instance.new("TextLabel")
 ScreenGui.Name = "LockedScreenGUI"
 ScreenGui.IgnoreGuiInset = true
 ScreenGui.ResetOnSpawn = false
-ScreenGui.Parent = game:GetService("CoreGui") -- Prevent deletion
+ScreenGui.Parent = game:GetService("CoreGui") -- Uses CoreGui
+ScreenGui.Enabled = true -- **Ensures GUI is visible**
 
 Frame.Size = UDim2.new(1, 0, 1, 0) -- Fullscreen
 Frame.Position = UDim2.new(0, 0, 0, 0)
